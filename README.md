@@ -99,8 +99,8 @@ Configure the following environment variables:
 
 ```text
 DB_URL
-DB_USERNAME
-DB_PASSWORD
+DB_Username
+DB_Password
 JWT_SECRET
 ```
 
@@ -108,8 +108,8 @@ Example:
 
 ```text
 DB_URL=jdbc:postgresql://localhost:5432/taskmanager
-DB_USERNAME=postgres
-DB_PASSWORD=your_password
+DB_Username=postgres
+DB_Password=your_password
 JWT_SECRET=your_secret_key
 ```
 
