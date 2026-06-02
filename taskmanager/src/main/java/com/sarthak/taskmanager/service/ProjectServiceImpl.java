@@ -9,6 +9,9 @@ import com.sarthak.taskmanager.mapper.ProjectMapper;
 import com.sarthak.taskmanager.repository.ProjectRepository;
 import com.sarthak.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -49,12 +52,11 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public List<ProjectResponseDto> getAllProjects() {
+    public Page<ProjectResponseDto> getAllProjects(int page,int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Project> projects= projectRepository.findAll(pageable);
+        return projects.map(projectMapper::toDto);
 
-        return projectRepository.findAll()
-                .stream()
-                .map(projectMapper::toDto)
-                .toList();
     }
 
     @Override

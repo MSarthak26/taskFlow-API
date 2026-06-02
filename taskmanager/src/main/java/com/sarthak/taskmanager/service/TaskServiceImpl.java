@@ -12,6 +12,9 @@ import com.sarthak.taskmanager.repository.ProjectRepository;
 import com.sarthak.taskmanager.repository.TaskRepository;
 import com.sarthak.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,11 +53,13 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public List<TaskResponseDto> getAllTasks() {
-        return taskRepository.findAll()
-                .stream()
-                .map(taskMapper::toDto)
-                .toList();
+    public Page<TaskResponseDto> getAllTasks(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Task> taskPage = taskRepository.findAll(pageable);
+
+        return taskPage.map(taskMapper::toDto);
     }
 
     @Override

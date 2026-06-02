@@ -2,10 +2,10 @@ package com.sarthak.taskmanager.controller;
 
 import com.sarthak.taskmanager.dto.CreateProjectRequest;
 import com.sarthak.taskmanager.dto.ProjectResponseDto;
-import com.sarthak.taskmanager.entity.Project;
 import com.sarthak.taskmanager.service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +26,14 @@ public class ProjectController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ProjectResponseDto>> getAllProjects(){
-        List<ProjectResponseDto> projects = projectService.getAllProjects();
-        return new ResponseEntity<>(projects,HttpStatus.OK);
+    public ResponseEntity<Page<ProjectResponseDto>> getAllProjects(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        Page<ProjectResponseDto> projectPage =
+                projectService.getAllProjects(page, size);
+
+        return ResponseEntity.ok(projectPage);
     }
 
     @GetMapping("/{id}")

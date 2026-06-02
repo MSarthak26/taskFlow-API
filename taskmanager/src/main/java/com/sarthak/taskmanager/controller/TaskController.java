@@ -7,6 +7,7 @@ import com.sarthak.taskmanager.entity.TaskStatus;
 import com.sarthak.taskmanager.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,14 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskResponseDto>>getAllTasks(){
-        List<TaskResponseDto> taskList = taskService.getAllTasks();
-        return new ResponseEntity<>(taskList,HttpStatus.OK);
+    public ResponseEntity<Page<TaskResponseDto>> getAllTasks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        Page<TaskResponseDto> taskPage =
+                taskService.getAllTasks(page, size);
+
+        return ResponseEntity.ok(taskPage);
     }
 
     @GetMapping("/{id}")
